@@ -143,6 +143,11 @@ export function scan(): ScanResult {
   ]);
   const skills: Skill[] = [];
   for (const name of names) {
+    // 过滤无 SKILL.md 的目录（框架目录如 adapters/learned 不是真 skill）
+    const hasSkill =
+      fs.existsSync(path.join(PATHS.agentsSkills, name, "SKILL.md")) ||
+      fs.existsSync(path.join(PATHS.claudeSkills, name, "SKILL.md"));
+    if (!hasSkill) continue;
     const agents = pathInfo(path.join(PATHS.agentsSkills, name));
     const claude = pathInfo(path.join(PATHS.claudeSkills, name));
     const lockEntry = lock.get(name);
