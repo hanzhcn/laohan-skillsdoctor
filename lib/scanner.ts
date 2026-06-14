@@ -140,13 +140,15 @@ export function scan(): ScanResult {
     ...listDir(PATHS.agentsSkills),
     ...listDir(PATHS.claudeSkills),
     ...lock.keys(),
+    ...plugins.keys(), // 含插件自带 skill（ECC/claude-mem/waza 等），让"插件"来源可见
   ]);
   const skills: Skill[] = [];
   for (const name of names) {
     // 过滤无 SKILL.md 的目录（框架目录如 adapters/learned 不是真 skill）
     const hasSkill =
       fs.existsSync(path.join(PATHS.agentsSkills, name, "SKILL.md")) ||
-      fs.existsSync(path.join(PATHS.claudeSkills, name, "SKILL.md"));
+      fs.existsSync(path.join(PATHS.claudeSkills, name, "SKILL.md")) ||
+      plugins.has(name);
     if (!hasSkill) continue;
     const agents = pathInfo(path.join(PATHS.agentsSkills, name));
     const claude = pathInfo(path.join(PATHS.claudeSkills, name));

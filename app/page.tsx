@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { RefreshCw, Stethoscope } from "lucide-react";
 import {
   Card,
@@ -184,7 +184,11 @@ export default function Home() {
         </TabsList>
         {tabs.map((t) => (
           <TabsContent key={t.key} value={t.key}>
-            <SkillTable skills={skills.filter(t.filter)} onOpen={open} />
+            {t.key === "plugin" ? (
+              <PluginGroups skills={skills.filter(t.filter)} onOpen={open} />
+            ) : (
+              <SkillTable skills={skills.filter(t.filter)} onOpen={open} />
+            )}
           </TabsContent>
         ))}
       </Tabs>
@@ -265,4 +269,42 @@ function PathCell({ p }: { p: PathInfo }): ReactNode {
       </span>
     );
   return <span className="text-emerald-600">real</span>;
+}
+
+function PluginGroups({
+  skills,
+  onOpen,
+}: {
+  skills: Skill[];
+  onOpen: (n: string) => void;
+}) {
+  const groups = useMemo(() => {
+    const m = new Map<string, Skill[]>();
+    for (const s of skills) {
+      const k = s.originDetail?.plugin ?? "unknown";
+      if (!m.has(k)) m.set(k, []);
+      m.get(k)!.push(s);
+    }
+    return [...m.entries()].sort((a, b) => b[1].length - a[1].length);
+  }, [skills]);
+  return (
+    <div className="space-y-2">
+      <p className="px-1 text-xs text-muted-foreground">
+        按插件分组，ECC（261）默认折叠，点展开
+      </p>
+      {groups.map(([plugin, sks]) => (
+        <details
+          key={plugin}
+          open={!plugin.startsWith("ecc")}
+          className="rounded-lg border"
+        >
+          <summary className="cursor-pointer px-4 py-2 font-mono text-sm hover:bg-muted/50">
+            {plugin}{" "}
+            <span className="text-muted-foreground">({sks.length})</span>
+          </summary>
+          <SkillTable skills={sks} onOpen={onOpen} />
+        </details>
+      ))}
+    </div>
+  );
 }
