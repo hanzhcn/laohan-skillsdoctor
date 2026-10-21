@@ -2,7 +2,7 @@
 
 > 原名 skill-doctor，2026-10 起更名为 laohan-skillsdoctor。
 
-> Claude Code / OpenClaw **skill 体检仪表盘** —— 一目了然看清你的 skills 来自哪里、有没有污染/漂移/孤儿。
+> Claude Code / Codex / OpenClaw **skill 体检仪表盘** —— 一目了然看清你的 skills 来自哪里、有没有污染/漂移/孤儿。
 
 [English](./README.en.md) · 简体中文
 
@@ -14,14 +14,15 @@
 
 ## 功能
 
-- **自动来源分类**：自研（laohan/cheat）/ npx / 插件副本 / OpenClaw / 孤儿，一眼看清
+- **自动来源分类**：自研（laohan/cheat）/ dbskill / 工具管理 / 治理真身 / npx / 插件副本 / OpenClaw / 孤儿，一眼看清
 - **健康检查**：
   - 🔴 失效链接（dangling symlink）
-  - 🔴 CC 不可见（agents 有但 claude 没）
-  - 🟡 插件副本（和插件 skill 同名，可能是污染）
+  - 🔴 CC 不可见（agents 有但 claude 没；`source-command-*` 与自定义忽略名单豁免）
+  - 🟡 插件副本（和插件 skill 同名，标注 SKILL.md 逐字一致/有差异）
   - 🟡 双份实体（agents + claude 都是实体，漂移温床）
-  - 🟡 漂移（自研 skill 的本地 vs git 仓库 diff）
-- **详情视图**：路径状态、npx 锁文件元数据、插件原件路径、漂移 diff、SKILL.md 预览
+  - 🟡 漂移（自研 skill 的本地 vs git 仓库 SKILL.md diff）
+  - 🟡 链断副本（自研 skill 以实体存在，未按规范 symlink 到 git 仓库）
+- **详情视图**：agents / claude / codex 路径状态、npx 锁文件元数据、插件原件路径、漂移 diff、SKILL.md 预览
 
 ## 安装
 
@@ -45,16 +46,22 @@ npm run dev
 | 插件清单 | `~/.claude/plugins/installed_plugins.json` |
 | 自研 git | `~/Documents/laohan-skills/` |
 | cheat git | `~/Documents/cheat-on-content/skills/` |
+| dbskill git | `~/Documents/dbskill/skills/` |
+| Codex | `~/.codex/skills/` |
 | OpenClaw | `~/.openclaw/skills/` |
 
 ## 分类规则
 
-1. symlink 指向 `Documents/laohan-skills` → 自研 laohan
-2. symlink 指向 `cheat-on-content` → 自研 cheat
-3. symlink 指向 `.openclaw/skills` → OpenClaw
-4. `.skill-lock.json` 有记录 → npx
-5. 与某插件 skills/ 同名 → 插件副本
-6. 以上都不是 → 孤儿 ⚠️
+1. 仅 OpenClaw / 仅 Codex 层存在 → OpenClaw 自带 / Codex 安装位
+2. symlink 指向 `Documents/laohan-skills` → 自研 laohan
+3. symlink 指向 `cheat-on-content` → 自研 cheat
+4. symlink 指向 `.openclaw/skills` → OpenClaw
+5. symlink 指向 `.claude/skills`、`.codex/skills` 或 `paseo-plugins` → 工具管理
+6. `dbs*` 且 dbskill 仓有同名 skill → dbskill
+7. `.skill-lock.json` 有记录 → npx
+8. 与某插件 skills/ 同名 → 插件副本
+9. agents 实体：`laohan-*` → 自研 laohan（治理真身），`cheat-*` → 自研 cheat，其余 → 治理真身
+10. 以上都不是 → 孤儿 ⚠️
 
 ## 技术栈
 
