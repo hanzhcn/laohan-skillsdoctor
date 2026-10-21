@@ -1,4 +1,6 @@
-# skill-doctor
+# laohan-skillsdoctor
+
+> 原名 skill-doctor，2026-10 起更名为 laohan-skillsdoctor。
 
 > Claude Code / OpenClaw **skill 体检仪表盘** —— 一目了然看清你的 skills 来自哪里、有没有污染/漂移/孤儿。
 
@@ -8,7 +10,7 @@
 
 用 Claude Code / OpenClaw 一段时间后，`~/.agents/skills` 和 `~/.claude/skills` 会堆出几百个 skill，来自四面八方：自己写的、`npx skills add` 装的、ECC 等插件自带的、OpenClaw 自带的……还会被某次操作批量塞进一堆**插件 skill 副本**（污染），或者自研 skill 的本地副本和 git 仓库**双向漂移**（你改了本地没推、仓库改了没拉，CC 一直读旧版）。
 
-现成的 skill 管理器（jiweiyeah/Skills-Manager 等）都是"入库分发"或"手动打标签"，**没有一个自动按来源分类、检测污染/漂移/孤儿**。skill-doctor 把这套审计逻辑产品化。
+现成的 skill 管理器（jiweiyeah/Skills-Manager 等）都是"入库分发"或"手动打标签"，**没有一个自动按来源分类、检测污染/漂移/孤儿**。laohan-skillsdoctor 把这套审计逻辑产品化。
 
 ## 功能
 
@@ -24,8 +26,8 @@
 ## 安装
 
 ```bash
-git clone https://github.com/hanzhcn/skill-doctor.git
-cd skill-doctor
+git clone https://github.com/hanzhcn/laohan-skillsdoctor.git
+cd laohan-skillsdoctor
 npm install
 npm run dev
 # 打开 http://localhost:3000

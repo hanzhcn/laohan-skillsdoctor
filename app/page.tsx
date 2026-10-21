@@ -114,7 +114,7 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <Stethoscope className="h-7 w-7" />
           <div>
-            <h1 className="text-2xl font-bold">skill-doctor</h1>
+            <h1 className="text-2xl font-bold">laohan-skillsdoctor</h1>
             <p className="text-sm text-muted-foreground">
               Claude Code / OpenClaw skill 体检仪表盘
             </p>
