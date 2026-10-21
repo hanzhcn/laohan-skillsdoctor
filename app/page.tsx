@@ -72,6 +72,11 @@ export default function Home() {
         filter: (s) => s.origin === "tool-managed",
       },
       {
+        key: "governed",
+        label: `治理 ${summary?.byOrigin.governed ?? 0}`,
+        filter: (s) => s.origin === "governed",
+      },
+      {
         key: "npx",
         label: `npx ${summary?.byOrigin.npx ?? 0}`,
         filter: (s) => s.origin === "npx",
@@ -133,6 +138,7 @@ export default function Home() {
               "self-cheat",
               "dbskill",
               "tool-managed",
+              "governed",
               "npx",
               "plugin",
               "openclaw",

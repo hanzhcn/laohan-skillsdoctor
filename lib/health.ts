@@ -3,7 +3,7 @@ import path from "path";
 import { execSync } from "child_process";
 import type { Health, PathInfo, Origin, PluginEntry } from "./types";
 import { PATHS } from "./paths";
-import { repoForOrigin, GOVERNED_SKILLS } from "./classify";
+import { repoForOrigin } from "./classify";
 
 function diffLineCount(a: string, b: string): number {
   try {
@@ -32,13 +32,12 @@ function repoSkillPath(name: string, origin: Origin): string | null {
   return fs.existsSync(p) ? p : null;
 }
 
-/** 实体副本形态 = 规范要求的"symlink→git 仓"链路断裂 */
+/** brokenLink = 该 symlink 到 git 仓却以实体存在（agents 实体 + git 仓同名并存 = 双份漂移源）。
+ *  治理真身（真身在治理仓、git 仓无同名）是规范形态，不报。 */
 function isBrokenLink(name: string, origin: Origin, agents: PathInfo): boolean {
   if (agents.state !== "real") return false;
   if (origin !== "self-laohan" && origin !== "self-cheat") return false;
-  if (origin === "self-laohan" && GOVERNED_SKILLS.has(name)) return false;
-  // 自研 skill 规范要求 agents 侧为 symlink→git 仓；实体存在 = 链断
-  return true;
+  return repoSkillPath(name, origin) !== null;
 }
 
 export function checkHealth(

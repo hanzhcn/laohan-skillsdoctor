@@ -3,6 +3,7 @@ export type Origin =
   | "self-cheat"
   | "dbskill"
   | "tool-managed"
+  | "governed"
   | "openclaw"
   | "npx"
   | "plugin"

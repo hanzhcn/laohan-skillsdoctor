@@ -28,6 +28,12 @@ export const ORIGIN_META: Record<
       "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
     group: "工具管理",
   },
+  governed: {
+    label: "治理·正常",
+    badge:
+      "bg-lime-500/15 text-lime-700 dark:text-lime-300 border-lime-500/30",
+    group: "治理",
+  },
   openclaw: {
     label: "OpenClaw",
     badge: "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30",

@@ -112,6 +112,7 @@ function summarize(skills: Skill[]): ScanResult["summary"] {
     "self-cheat": 0,
     dbskill: 0,
     "tool-managed": 0,
+    governed: 0,
     openclaw: 0,
     npx: 0,
     plugin: 0,

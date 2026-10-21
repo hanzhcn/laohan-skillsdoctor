@@ -5,20 +5,21 @@ import { PATHS } from "./paths";
 
 /**
  * 来源分类（按优先级）。规则权威规格见 ~/.claude/rules/skills.md v1.11。
- * 判定链：symlink 目标 → dbskill 仓库 → 反向链定式 → 治理仓实体/链断副本 → lock/plugin → orphan。
+ * 判定链：symlink 目标 → 反向链定式 → dbskill → lock → plugin →
+ *         agents 实体（治理真身）→ orphan。
+ * 原则：按"形态"判定，不按名字枚举——名单法天生不完备
+ * （判例：glm-chat/deepseek-chat 等治理 skill 被漏报成孤儿清理候选）。
  */
-
-/** 自研 skill 真身在治理仓 ~/.agents/skills 实体（非公开 git 仓）的名单 */
-export const GOVERNED_SKILLS = new Set([
-  "laohan-skillcreator",
-  "laohan-chushihua",
-  "laohan-devrules",
-]);
 
 function repoForOrigin(origin: Origin): string | null {
   if (origin === "self-laohan") return PATHS.laohanRepo;
   if (origin === "self-cheat") return PATHS.cheatRepo;
   return null;
+}
+
+/** claude 侧桥接是否健康：symlink 存在且指向本 skill */
+function claudeBridgeOk(name: string, claude: PathInfo): boolean {
+  return claude.state === "symlink" && claude.exists;
 }
 
 export function classify(
@@ -28,6 +29,7 @@ export function classify(
   lock?: LockEntry,
   plugin?: PluginEntry,
 ): { origin: Origin; originDetail?: { source?: string; plugin?: string; repo?: string } } {
+  // 1. symlink 目标 → 自研 git 仓 / openclaw（规范形态）
   const targets = [agents.target, claude.target].filter(Boolean) as string[];
   for (const t of targets) {
     if (t.includes("Documents/laohan-skills"))
@@ -37,25 +39,29 @@ export function classify(
     if (t.includes(".openclaw/skills"))
       return { origin: "openclaw", originDetail: { repo: "openclaw" } };
   }
-  // 反向链定式（skills.md v1.11）：工具管理型 skill 真身在安装位，
-  // agents/claude 侧 symlink 指向工具目录而非 git 仓（paseo*、ui-sketcher 等）
+  // 2. 反向链定式（skills.md v1.11）：工具管理型 skill 真身在安装位，
+  //    agents 侧 symlink 指向工具目录而非 git 仓（paseo* 等）
   for (const t of targets) {
     if (/\/\.claude\/skills\//.test(t) || /\/\.codex\/skills\//.test(t) || t.includes("paseo-plugins"))
       return { origin: "tool-managed", originDetail: { repo: t } };
   }
-  // dbskill 手动复制形态：dbs-* 真身在 ~/Documents/dbskill/skills
+  // 3. dbskill 手动复制形态：dbs-* 真身在 ~/Documents/dbskill/skills
   if (name.startsWith("dbs") && fs.existsSync(path.join(PATHS.dbsRepo, name, "SKILL.md")))
     return { origin: "dbskill", originDetail: { repo: "dbskill" } };
-  // 治理仓实体：真身就是 ~/.agents/skills 实体（非公开仓、非 npx/plugin）
-  if (GOVERNED_SKILLS.has(name) && agents.state === "real")
-    return { origin: "self-laohan", originDetail: { repo: "治理仓实体" } };
-  // 链断自研副本：按前缀认自研，但以实体形态存在（规范应为 symlink→git 仓）
-  if (agents.state === "real" && claude.state !== "real") {
-    if (/^laohan-/.test(name)) return { origin: "self-laohan", originDetail: { repo: "实体副本·链断" } };
-    if (/^cheat-/.test(name)) return { origin: "self-cheat", originDetail: { repo: "实体副本·链断" } };
-  }
+  // 4. lock / plugin 须在实体形态判定之前——npx 装的 skill 真身就是 agents 实体
   if (lock) return { origin: "npx", originDetail: { source: lock.source } };
   if (plugin) return { origin: "plugin", originDetail: { plugin: plugin.plugin } };
+  // 5. agents 实体 = 治理真身（真身在治理仓 ~/.agents/skills，非 git 仓非 npx）。
+  //    laohan-/cheat- 前缀归自研（含治理实体与公开仓真身）；其余（glm-chat、
+  //    deepseek-chat 等跨模型通道）归 governed——均为正常形态，不是孤儿。
+  if (agents.state === "real") {
+    const bridged = claudeBridgeOk(name, claude);
+    if (/^laohan-/.test(name))
+      return { origin: "self-laohan", originDetail: { repo: bridged ? "治理仓实体" : "治理实体·未桥接CC" } };
+    if (/^cheat-/.test(name))
+      return { origin: "self-cheat", originDetail: { repo: bridged ? "治理仓实体" : "治理实体·未桥接CC" } };
+    return { origin: "governed", originDetail: { repo: bridged ? "治理真身" : "治理真身·未桥接CC" } };
+  }
   return { origin: "orphan" };
 }
 
