@@ -49,9 +49,16 @@ export function classify(
       return { origin: "openclaw", originDetail: { repo: "openclaw" } };
   }
   // 2. 反向链定式（skills.md v1.11）：工具管理型 skill 真身在安装位，
-  //    agents 侧 symlink 指向工具目录而非 git 仓（paseo* 等）
+  //    agents/claude 侧 symlink 指向工具目录而非 git 仓（paseo* 等）。
+  //    安装位特征：.claude/skills、.codex/skills、paseo-plugins、
+  //    .agents/use-family（image-use 等独立工具仓家族，原地 git pull 更新）
   for (const t of targets) {
-    if (/\/\.claude\/skills\//.test(t) || /\/\.codex\/skills\//.test(t) || t.includes("paseo-plugins"))
+    if (
+      /\/\.claude\/skills\//.test(t) ||
+      /\/\.codex\/skills\//.test(t) ||
+      t.includes("paseo-plugins") ||
+      t.includes(".agents/use-family")
+    )
       return { origin: "tool-managed", originDetail: { repo: t } };
   }
   // 3. dbskill 手动复制形态：dbs-* 真身在 ~/Documents/dbskill/skills
