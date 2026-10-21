@@ -21,7 +21,7 @@
   - 🟡 插件副本（和插件 skill 同名，标注 SKILL.md 逐字一致/有差异）
   - 🟡 双份实体（agents + claude 都是实体，漂移温床）
   - 🟡 漂移（自研 skill 的本地 vs git 仓库 SKILL.md diff）
-  - 🟡 链断副本（自研 skill 以实体存在，未按规范 symlink 到 git 仓库）
+  - 🟡 链断副本（自研 skill 以实体存在，未按规范 symlink 到 git 仓库；仅当 git 仓有同名 skill 时标记，治理仓真身不报）
 - **详情视图**：agents / claude / codex 路径状态、npx 锁文件元数据、插件原件路径、漂移 diff、SKILL.md 预览
 
 ## 安装
@@ -50,9 +50,11 @@ npm run dev
 | Codex | `~/.codex/skills/` |
 | OpenClaw | `~/.openclaw/skills/` |
 
+> 三个自研仓路径是作者本机的目录布局，可在 `lib/paths.ts` 中改成你的路径。目录不存在时，相关分类、漂移与链断检查会自动跳过。
+
 ## 分类规则
 
-1. 仅 OpenClaw / 仅 Codex 层存在 → OpenClaw 自带 / Codex 安装位
+1. 仅 OpenClaw / 仅 Codex 层存在 → OpenClaw 自带 / 工具管理（Codex 安装位）
 2. symlink 指向 `Documents/laohan-skills` → 自研 laohan
 3. symlink 指向 `cheat-on-content` → 自研 cheat
 4. symlink 指向 `.openclaw/skills` → OpenClaw

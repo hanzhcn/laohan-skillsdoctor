@@ -21,7 +21,7 @@ Existing skill managers (jiweiyeah/Skills-Manager and friends) are all about "pu
   - 🟡 Plugin copy (same name as a plugin skill, SKILL.md flagged as identical or different)
   - 🟡 Duplicate entity (real entities under both agents and claude — a breeding ground for drift)
   - 🟡 Drift (SKILL.md diff between a self-built skill's local copy and its git repo)
-  - 🟡 Unlinked copy (a self-built skill exists as a real copy instead of a symlink to its git repo)
+  - 🟡 Unlinked copy (a self-built skill exists as a real copy instead of a symlink to its git repo; flagged only when the git repo has a same-named skill — governance entities are not flagged)
 - **Detail view**: agents / claude / codex path status, npx lockfile metadata, original plugin path, drift diff, SKILL.md preview
 
 ## Install
@@ -50,9 +50,11 @@ Runs entirely locally. It scans your skills directories read-only and never modi
 | Codex | `~/.codex/skills/` |
 | OpenClaw | `~/.openclaw/skills/` |
 
+> The three self-built repo paths mirror the author's local layout; edit them in `lib/paths.ts` if yours differ. When a directory is missing, the related classification, drift, and unlinked-copy checks are skipped silently.
+
 ## Classification Rules
 
-1. Present only in the OpenClaw / Codex layer → shipped with OpenClaw / Codex install location
+1. Present only in the OpenClaw / Codex layer → shipped with OpenClaw / tool-managed (Codex install location)
 2. symlink points to `Documents/laohan-skills` → self-built laohan
 3. symlink points to `cheat-on-content` → self-built cheat
 4. symlink points to `.openclaw/skills` → OpenClaw
