@@ -1,6 +1,8 @@
 export type Origin =
   | "self-laohan"
   | "self-cheat"
+  | "dbskill"
+  | "tool-managed"
   | "openclaw"
   | "npx"
   | "plugin"
@@ -37,12 +39,14 @@ export interface Health {
   dangling?: boolean;
   dualEntity?: boolean;
   notInCC?: boolean;
+  brokenLink?: boolean; // 自研 skill 以实体副本存在，未按规范 symlink→git 仓库
 }
 
 export interface Skill {
   name: string;
   agents: PathInfo;
   claude: PathInfo;
+  codex: PathInfo;
   origin: Origin;
   originDetail?: { source?: string; plugin?: string; repo?: string };
   lock?: LockEntry;
@@ -58,6 +62,7 @@ export interface ScanSummary {
     dangling: number;
     dualEntity: number;
     notInCC: number;
+    brokenLink: number;
   };
   total: number;
 }

@@ -15,7 +15,7 @@ export async function GET(
   const { skills } = scan();
   const skill = skills.find((s) => s.name === name);
   if (!skill) return NextResponse.json({ error: "not found" }, { status: 404 });
-  const drift = skill.health.drift ? driftDiff(name) : null;
+  const drift = skill.health.drift ? driftDiff(name, skill.origin) : null;
   let preview: string | null = null;
   const skillMd = path.join(PATHS.agentsSkills, name, "SKILL.md");
   try {

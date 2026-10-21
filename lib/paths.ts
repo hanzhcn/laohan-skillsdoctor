@@ -10,5 +10,7 @@ export const PATHS = {
   pluginsFile: path.join(HOME, ".claude", "plugins", "installed_plugins.json"),
   laohanRepo: path.join(HOME, "Documents", "laohan-skills"),
   cheatRepo: path.join(HOME, "Documents", "cheat-on-content", "skills"),
+  dbsRepo: path.join(HOME, "Documents", "dbskill", "skills"),
   openclawSkills: path.join(HOME, ".openclaw", "skills"),
+  codexSkills: path.join(HOME, ".codex", "skills"),
 } as const

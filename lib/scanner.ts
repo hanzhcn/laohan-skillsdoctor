@@ -110,6 +110,8 @@ function summarize(skills: Skill[]): ScanResult["summary"] {
   const byOrigin: Record<Origin, number> = {
     "self-laohan": 0,
     "self-cheat": 0,
+    dbskill: 0,
+    "tool-managed": 0,
     openclaw: 0,
     npx: 0,
     plugin: 0,
@@ -121,6 +123,7 @@ function summarize(skills: Skill[]): ScanResult["summary"] {
     dangling: 0,
     dualEntity: 0,
     notInCC: 0,
+    brokenLink: 0,
   };
   for (const s of skills) {
     byOrigin[s.origin]++;
@@ -129,6 +132,7 @@ function summarize(skills: Skill[]): ScanResult["summary"] {
     if (s.health.dangling) healthIssues.dangling++;
     if (s.health.dualEntity) healthIssues.dualEntity++;
     if (s.health.notInCC) healthIssues.notInCC++;
+    if (s.health.brokenLink) healthIssues.brokenLink++;
   }
   return { byOrigin, healthIssues, total: skills.length };
 }
@@ -152,6 +156,7 @@ export function scan(): ScanResult {
     if (!hasSkill) continue;
     const agents = pathInfo(path.join(PATHS.agentsSkills, name));
     const claude = pathInfo(path.join(PATHS.claudeSkills, name));
+    const codex = pathInfo(path.join(PATHS.codexSkills, name));
     const lockEntry = lock.get(name);
     const pluginEntry = plugins.get(name);
     const { origin, originDetail } = classify(
@@ -166,6 +171,7 @@ export function scan(): ScanResult {
       name,
       agents,
       claude,
+      codex,
       origin,
       originDetail,
       lock: lockEntry,

@@ -16,6 +16,18 @@ export const ORIGIN_META: Record<
       "bg-teal-500/15 text-teal-700 dark:text-teal-300 border-teal-500/30",
     group: "自研",
   },
+  dbskill: {
+    label: "dbskill",
+    badge:
+      "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border-cyan-500/30",
+    group: "dbskill",
+  },
+  "tool-managed": {
+    label: "工具管理",
+    badge:
+      "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
+    group: "工具管理",
+  },
   openclaw: {
     label: "OpenClaw",
     badge: "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30",
@@ -64,6 +76,10 @@ export const HEALTH_META: Record<
     label: "CC不可见",
     badge: "bg-red-500/15 text-red-700 border-red-500/30",
   },
+  brokenLink: {
+    label: "链断副本",
+    badge: "bg-orange-500/15 text-orange-700 border-orange-500/30",
+  },
 };
 
 export function healthItems(h: Health) {
@@ -85,5 +101,7 @@ export function healthItems(h: Health) {
   if (h.dangling) items.push({ key: "dangling", label: "失效链接" });
   if (h.dualEntity) items.push({ key: "dualEntity", label: "双份实体" });
   if (h.notInCC) items.push({ key: "notInCC", label: "CC不可见" });
+  if (h.brokenLink)
+    items.push({ key: "brokenLink", label: "链断副本" });
   return items;
 }

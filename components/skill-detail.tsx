@@ -84,6 +84,14 @@ export function SkillDetail({
                       : `${s.claude.state}${s.claude.target ? ` → ${s.claude.target}` : ""}`}
                   </div>
                 </div>
+                <div>
+                  <div className="text-muted-foreground">codex</div>
+                  <div>
+                    {s.codex.state === "absent"
+                      ? "—"
+                      : `${s.codex.state}${s.codex.target ? ` → ${s.codex.target}` : ""}`}
+                  </div>
+                </div>
               </div>
               {s.lock && (
                 <>

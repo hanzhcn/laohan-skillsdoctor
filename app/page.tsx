@@ -62,6 +62,16 @@ export default function Home() {
           s.origin === "self-laohan" || s.origin === "self-cheat",
       },
       {
+        key: "dbskill",
+        label: `dbskill ${summary?.byOrigin.dbskill ?? 0}`,
+        filter: (s) => s.origin === "dbskill",
+      },
+      {
+        key: "tool-managed",
+        label: `工具管理 ${summary?.byOrigin["tool-managed"] ?? 0}`,
+        filter: (s) => s.origin === "tool-managed",
+      },
+      {
         key: "npx",
         label: `npx ${summary?.byOrigin.npx ?? 0}`,
         filter: (s) => s.origin === "npx",
@@ -116,11 +126,13 @@ export default function Home() {
       {err && <div className="mb-4 text-red-600">错误: {err}</div>}
 
       {summary && (
-        <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+        <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {(
             [
               "self-laohan",
               "self-cheat",
+              "dbskill",
+              "tool-managed",
               "npx",
               "plugin",
               "openclaw",
@@ -167,6 +179,11 @@ export default function Home() {
               {issues.notInCC > 0 && (
                 <span className="text-red-600">
                   CC不可见 {issues.notInCC}
+                </span>
+              )}
+              {issues.brokenLink > 0 && (
+                <span className="text-orange-600">
+                  链断副本 {issues.brokenLink}
                 </span>
               )}
             </Card>
@@ -218,6 +235,7 @@ function SkillTable({
             <TableHead>来源</TableHead>
             <TableHead>agents</TableHead>
             <TableHead>claude</TableHead>
+            <TableHead>codex</TableHead>
             <TableHead>健康</TableHead>
           </TableRow>
         </TableHeader>
@@ -238,6 +256,9 @@ function SkillTable({
               <TableCell className="font-mono text-xs">
                 <PathCell p={s.claude} />
               </TableCell>
+              <TableCell className="font-mono text-xs">
+                <PathCell p={s.codex} />
+              </TableCell>
               <TableCell>
                 <HealthBadges skill={s} />
               </TableCell>
@@ -246,7 +267,7 @@ function SkillTable({
           {skills.length === 0 && (
             <TableRow>
               <TableCell
-                colSpan={5}
+                colSpan={6}
                 className="py-8 text-center text-muted-foreground"
               >
                 无
