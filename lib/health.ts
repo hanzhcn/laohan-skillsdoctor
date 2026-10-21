@@ -1,9 +1,38 @@
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { execSync } from "child_process";
 import type { Health, PathInfo, Origin, PluginEntry } from "./types";
 import { PATHS } from "./paths";
 import { repoForOrigin } from "./classify";
+
+/**
+ * notInCC 抑制名单：这些 skill 有意不桥接 CC，不算健康问题。
+ * 内置规则：source-command-*（自述"迁移来源参考，宿主能力未验证"的参考材料，
+ * 且与 ECC 命令大面积重复，桥接只会污染 CC 列表——2026-10-21 拍板不桥）。
+ * 外部名单：~/.agents/.skd-ignore-notcc 一行一个 skill 名，可自行增删。
+ */
+const NOTCC_BUILTIN_PREFIXES = ["source-command-"];
+
+function loadNotccIgnore(): Set<string> {
+  const s = new Set<string>();
+  try {
+    const lines = fs
+      .readFileSync(path.join(os.homedir(), ".agents", ".skd-ignore-notcc"), "utf-8")
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    for (const l of lines) s.add(l);
+  } catch {
+    /* 文件不存在 = 无外部名单 */
+  }
+  return s;
+}
+
+function isNotccSuppressed(name: string, ignoreList: Set<string>): boolean {
+  if (ignoreList.has(name)) return true;
+  return NOTCC_BUILTIN_PREFIXES.some((p) => name.startsWith(p));
+}
 
 function diffLineCount(a: string, b: string): number {
   try {
@@ -63,8 +92,9 @@ export function checkHealth(
   }
 
   // not in CC (agents has it, claude doesn't → CC can't see it)
+  // 有意不桥接的（source-command-* 参考材料 / 外部抑制名单）不算健康问题
   if (agents.state !== "absent" && claude.state === "absent") {
-    h.notInCC = true;
+    if (!isNotccSuppressed(name, loadNotccIgnore())) h.notInCC = true;
   }
 
   // brokenLink：自研 skill 实体副本，repo 存在的同名 skill 未通过 symlink 接链

@@ -28,7 +28,16 @@ export function classify(
   claude: PathInfo,
   lock?: LockEntry,
   plugin?: PluginEntry,
+  openclaw?: PathInfo,
+  codex?: PathInfo,
 ): { origin: Origin; originDetail?: { source?: string; plugin?: string; repo?: string } } {
+  // 0. 单宿主独有：仅 openclaw 层存在 → openclaw 自带；仅 codex 层存在 → codex 安装位真身
+  if (agents.state === "absent" && claude.state === "absent") {
+    if (openclaw && openclaw.state !== "absent")
+      return { origin: "openclaw", originDetail: { repo: "openclaw-独有" } };
+    if (codex && codex.state !== "absent")
+      return { origin: "tool-managed", originDetail: { repo: "codex-独有" } };
+  }
   // 1. symlink 目标 → 自研 git 仓 / openclaw（规范形态）
   const targets = [agents.target, claude.target].filter(Boolean) as string[];
   for (const t of targets) {

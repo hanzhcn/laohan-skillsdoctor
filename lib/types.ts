@@ -48,6 +48,7 @@ export interface Skill {
   agents: PathInfo;
   claude: PathInfo;
   codex: PathInfo;
+  openclaw: PathInfo;
   origin: Origin;
   originDetail?: { source?: string; plugin?: string; repo?: string };
   lock?: LockEntry;

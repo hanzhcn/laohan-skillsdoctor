@@ -144,6 +144,8 @@ export function scan(): ScanResult {
   const names = new Set<string>([
     ...listDir(PATHS.agentsSkills),
     ...listDir(PATHS.claudeSkills),
+    ...listDir(PATHS.openclawSkills), // OpenClaw 独有 skill（README 承诺的双生态覆盖）
+    ...listDir(PATHS.codexSkills), // Codex 安装位独有（反向链定式的真身层）
     ...lock.keys(),
     ...plugins.keys(), // 含插件自带 skill（ECC/claude-mem/waza 等），让"插件"来源可见
   ]);
@@ -153,11 +155,14 @@ export function scan(): ScanResult {
     const hasSkill =
       fs.existsSync(path.join(PATHS.agentsSkills, name, "SKILL.md")) ||
       fs.existsSync(path.join(PATHS.claudeSkills, name, "SKILL.md")) ||
+      fs.existsSync(path.join(PATHS.openclawSkills, name, "SKILL.md")) ||
+      fs.existsSync(path.join(PATHS.codexSkills, name, "SKILL.md")) ||
       plugins.has(name);
     if (!hasSkill) continue;
     const agents = pathInfo(path.join(PATHS.agentsSkills, name));
     const claude = pathInfo(path.join(PATHS.claudeSkills, name));
     const codex = pathInfo(path.join(PATHS.codexSkills, name));
+    const openclaw = pathInfo(path.join(PATHS.openclawSkills, name));
     const lockEntry = lock.get(name);
     const pluginEntry = plugins.get(name);
     const { origin, originDetail } = classify(
@@ -166,6 +171,8 @@ export function scan(): ScanResult {
       claude,
       lockEntry,
       pluginEntry,
+      openclaw,
+      codex,
     );
     const health = checkHealth(name, agents, claude, origin, pluginEntry);
     skills.push({
@@ -173,6 +180,7 @@ export function scan(): ScanResult {
       agents,
       claude,
       codex,
+      openclaw,
       origin,
       originDetail,
       lock: lockEntry,
