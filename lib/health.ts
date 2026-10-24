@@ -91,6 +91,14 @@ export function checkHealth(
     h.dualEntity = true;
   }
 
+  // nested duplicate: <skill>/<skill>/SKILL.md（npx update 只重写外层不清嵌套旧版；
+  // Codex 递归扫描会双重注入。判例 2026-10-24 paseo 六件套）
+  const nestedIn = (base: string) =>
+    fs.existsSync(path.join(base, name, name, "SKILL.md"));
+  if (nestedIn(PATHS.agentsSkills) || nestedIn(PATHS.claudeSkills)) {
+    h.nestedDuplicate = true;
+  }
+
   // not in CC (agents has it, claude doesn't → CC can't see it)
   // 有意不桥接的（source-command-* 参考材料 / 外部抑制名单）不算健康问题
   if (agents.state !== "absent" && claude.state === "absent") {

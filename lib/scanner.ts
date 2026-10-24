@@ -123,6 +123,7 @@ function summarize(skills: Skill[]): ScanResult["summary"] {
     drift: 0,
     dangling: 0,
     dualEntity: 0,
+    nestedDuplicate: 0,
     notInCC: 0,
     brokenLink: 0,
   };
@@ -132,6 +133,7 @@ function summarize(skills: Skill[]): ScanResult["summary"] {
     if (s.health.drift) healthIssues.drift++;
     if (s.health.dangling) healthIssues.dangling++;
     if (s.health.dualEntity) healthIssues.dualEntity++;
+    if (s.health.nestedDuplicate) healthIssues.nestedDuplicate++;
     if (s.health.notInCC) healthIssues.notInCC++;
     if (s.health.brokenLink) healthIssues.brokenLink++;
   }

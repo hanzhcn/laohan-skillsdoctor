@@ -182,6 +182,11 @@ export default function Home() {
               {issues.dualEntity > 0 && (
                 <span>双份实体 {issues.dualEntity}</span>
               )}
+              {issues.nestedDuplicate > 0 && (
+                <span className="text-orange-600">
+                  嵌套残留 {issues.nestedDuplicate}
+                </span>
+              )}
               {issues.notInCC > 0 && (
                 <span className="text-red-600">
                   CC不可见 {issues.notInCC}

@@ -39,6 +39,7 @@ export interface Health {
   drift?: { repo: string; diffLines: number };
   dangling?: boolean;
   dualEntity?: boolean;
+  nestedDuplicate?: boolean; // skill 目录内嵌同名子目录含 SKILL.md（npx update 残留，Codex 递归扫描双重注入）
   notInCC?: boolean;
   brokenLink?: boolean; // 自研 skill 以实体副本存在，未按规范 symlink→git 仓库
 }
@@ -63,6 +64,7 @@ export interface ScanSummary {
     drift: number;
     dangling: number;
     dualEntity: number;
+    nestedDuplicate: number;
     notInCC: number;
     brokenLink: number;
   };

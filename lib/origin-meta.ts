@@ -78,6 +78,10 @@ export const HEALTH_META: Record<
     label: "双份实体",
     badge: "bg-orange-500/15 text-orange-700 border-orange-500/30",
   },
+  nestedDuplicate: {
+    label: "嵌套残留",
+    badge: "bg-orange-500/15 text-orange-700 border-orange-500/30",
+  },
   notInCC: {
     label: "CC不可见",
     badge: "bg-red-500/15 text-red-700 border-red-500/30",
@@ -106,6 +110,12 @@ export function healthItems(h: Health) {
     });
   if (h.dangling) items.push({ key: "dangling", label: "失效链接" });
   if (h.dualEntity) items.push({ key: "dualEntity", label: "双份实体" });
+  if (h.nestedDuplicate)
+    items.push({
+      key: "nestedDuplicate",
+      label: "嵌套残留",
+      detail: "目录内嵌同名子目录 SKILL.md，Codex 会双重注入",
+    });
   if (h.notInCC) items.push({ key: "notInCC", label: "CC不可见" });
   if (h.brokenLink)
     items.push({ key: "brokenLink", label: "链断副本" });
