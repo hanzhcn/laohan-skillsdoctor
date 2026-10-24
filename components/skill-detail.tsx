@@ -88,7 +88,9 @@ export function SkillDetail({
                   <div className="text-muted-foreground">codex</div>
                   <div>
                     {s.codex.state === "absent"
-                      ? "—"
+                      ? s.agents.state !== "absent"
+                        ? "✓ 经 agents 全量扫描可达（目录桥接非必需）"
+                        : "—"
                       : `${s.codex.state}${s.codex.target ? ` → ${s.codex.target}` : ""}`}
                   </div>
                 </div>

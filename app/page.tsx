@@ -268,7 +268,13 @@ function SkillTable({
                 <PathCell p={s.claude} />
               </TableCell>
               <TableCell className="font-mono text-xs">
-                <PathCell p={s.codex} />
+                {s.codex.state === "absent" && s.agents.state !== "absent" ? (
+                  <span className="text-muted-foreground" title="Codex 直接扫 ~/.agents/skills 全量，目录桥接非必需">
+                    ✓ 经 agents
+                  </span>
+                ) : (
+                  <PathCell p={s.codex} />
+                )}
               </TableCell>
               <TableCell>
                 <HealthBadges skill={s} />
