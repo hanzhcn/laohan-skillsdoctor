@@ -1,5 +1,15 @@
 # laohan-skillsdoctor
 
+## Runtime evidence
+
+The dashboard separates filesystem health, host visibility, structured invocation records, and scenario validation. Codex visibility comes from the local app-server `initialize` / `skills/list` protocol without starting a model turn. Claude's current global entry configuration and historical injected skill bodies are reported separately; configuration reachability is not proof of current model visibility.
+
+Claude `Skill` calls and structured file reads are correlated with results and deduplicated per host/session/call ID. Ordinary mentions, implicit use and shell-embedded reads are not counted. Missing, malformed, oversized or budget-truncated logs remain explicitly unverified. Runtime support currently covers Claude Code and Codex; other hosts retain filesystem checks only.
+
+An effective-execution indicator requires a local scenario-validation receipt tied to the current file hash and a successfully loaded matching skill body. Run `npm run verify:skill -- --help` after actually using a skill, then supply the observed session/call IDs and your chosen validation program. The Web API never executes commands. Receipts retain scenario, timestamps, exit status and hashes, not command arguments or output. A changed skill invalidates previous receipts. A passing scenario does not prove universal skill effectiveness.
+
+The app binds to `127.0.0.1` by default. Runtime scanning is read-only and does not call models, change host configuration, or install hooks. Tests: `npm test`, `npm run lint`, `npm run build`.
+
 > Formerly `skill-doctor`, renamed to `laohan-skillsdoctor` in October 2026.
 
 > A **skill health dashboard** for Claude Code / Codex / OpenClaw — see at a glance where your skills come from and whether any are polluted, drifting, or orphaned.

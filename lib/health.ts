@@ -1,7 +1,7 @@
 import fs from "fs";
 import os from "os";
 import path from "path";
-import { execSync } from "child_process";
+import { execFileSync } from "child_process";
 import type { Health, PathInfo, Origin, PluginEntry } from "./types";
 import { PATHS } from "./paths";
 import { repoForOrigin } from "./classify";
@@ -36,7 +36,7 @@ function isNotccSuppressed(name: string, ignoreList: Set<string>): boolean {
 
 function diffLineCount(a: string, b: string): number {
   try {
-    const out = execSync(`diff ${JSON.stringify(a)} ${JSON.stringify(b)}`, {
+    const out = execFileSync("diff", ["--", a, b], {
       encoding: "utf-8",
     });
     return out
@@ -45,11 +45,11 @@ function diffLineCount(a: string, b: string): number {
   } catch (e: unknown) {
     // diff exits non-zero when files differ but still writes diff to stdout
     const out = (e as { stdout?: string }).stdout;
-    if (out)
+    if ((e as { status?: number }).status === 1 && out)
       return out
         .split("\n")
         .filter((l) => l.startsWith("<") || l.startsWith(">")).length;
-    return 0;
+    throw new Error("文件差异检查未成功完成，不能判定无漂移");
   }
 }
 
@@ -132,10 +132,11 @@ export function driftDiff(name: string, origin: Origin): string | null {
   const localSkill = path.join(PATHS.agentsSkills, name, "SKILL.md");
   if (!fs.existsSync(localSkill)) return null;
   try {
-    return execSync(`diff ${JSON.stringify(localSkill)} ${JSON.stringify(repoSkill)}`, {
+    return execFileSync("diff", ["--", localSkill, repoSkill], {
       encoding: "utf-8",
     });
   } catch (e: unknown) {
-    return (e as { stdout?: string }).stdout ?? null;
+    if ((e as { status?: number }).status === 1) return (e as { stdout?: string }).stdout ?? null;
+    throw new Error("文件差异详情读取失败");
   }
 }

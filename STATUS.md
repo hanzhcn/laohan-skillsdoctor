@@ -2,9 +2,22 @@
 
 ## 当前任务
 
-无待续任务。SKILL-DOCTOR-MAINTENANCE 分类与盲区修复批已交付（见近期流水），下一批按需领取。
+### SKILLS-DOCTOR-RUNTIME-20261024 · 实现与验证完成，待 PR 集成
+
+- owner：本次 Codex，会话唯一写入者；实际工作目录为 `../laohan-skillsdoctor-worktrees/runtime-evidence-20261024`，分支 `codex/skillsdoctor-runtime-evidence-20261024`，基线 `2cf8c7b30c6d93acb97f8f8223b0dfaf7234f502`。
+- 目标已实现：新增宿主可见、历史注入、真实调用/结果及场景验收记录；保留原文件体检。默认不改技能/宿主配置、不装 hook、不调用模型、不自动运行技能；Web 不收命令。
+- 候选：运行代码/测试摘要 `e1497b2716b7f6dd5c4d916e88b9bc19be1891f80e6b99bdd9c5333f1fe3099d`；运行证据与详情见 [本轮回执](docs/handoff/SKILLS_DOCTOR_RUNTIME_20261024.md)。状态与回执补录不改变已验运行代码。
+- 已验：26 个正反例、lint、生产 build；本地 API200，非法范围400，跨源403，实际恶意 Host 对三条 API403；Chrome 生产构建筛选/搜索/调用详情/空验收状态、无控制台错误。
+- 复审：GPT 实现，免费 Hy3 主体及最后三项增量分别取得 HTTP200 / stop / 有效 APPROVE，无发现。Step 超时、Hy3/DeepSeek 推理耗尽正文额度的失败均未计通过；最后经登记的 high/64000输出/180秒定点恢复完成，无收费通道。
+- 已修边界：Next 规范化 URL 下实际 Host 绕过；调用后元数据变化的版本关联；目录预算与插件声明越界；diff 参数向量和失败传播；旧 UI 的文件“健康/CC不可见”改为物理入口语义。
+- 未验边界：Claude 当前模型完整清单、其他项目/窗口与其他宿主运行态、Shell/exec 内采用、无充分日志/场景验收的真实业务效果；均保留未验证。实际日志大于扫描预算时显式部分覆盖，不推导没有使用。
+- 运行：本任务生产预览 `http://127.0.0.1:3017`；main 工作区保持干净。该预览与待集成 worktree 正常保留，不是垃圾/残留；无远端生产部署，NOT_APPLICABLE。
+- 集成：功能提交 `b031b3bc0f316149ca32a4d9c7fd8da51d4b31d9` 已 push；[PR #1](https://github.com/hanzhcn/laohan-skillsdoctor/pull/1) 已创建、open、未合并，读取时 mergeable=true。随后仅补录此状态与回执；运行代码未变化。Jeffrey 接受 UNVERIFIED。
+- 下一动作：Jeffrey 可直接打开预览体验；正式目录的新版本待 PR 集成，不重复实现。需要验收记录按 README 显式 CLI 为具体场景记录。
 
 ## 近期流水
+
+**2026-10-24·运行证据检查。** Claude/Codex 可见、调用/加载、指定场景验收分层落地，26 正反例与生产 API/UI 验证通过，不同模型复核完成；完整回执见 `docs/handoff/SKILLS_DOCTOR_RUNTIME_20261024.md`。当前任务卡保留待 PR 集成状态。
 
 **2026-10-21·image-use 归属修正（use-family 安装位形态）。** Jeffrey 澄清 image-use 是其 codex 生图唯一方法、不可删。复核链路：真身 `~/.agents/use-family/image-use`（独立 git 仓 leeguooooo/image-use），三侧桥接齐全（claude→agents→use-family 穿透 + codex 直指真身），此前 eza ls 显示误导肉眼判为实体孤儿。classify 反向链分支补 `.agents/use-family` 安装位特征（第六种真身位置，与 paseo-plugins 同性质：安装位真身原地更新）。实测 orphan 0（全生态 577 零孤儿）、tool-managed 10。链路零改动（生图功能未触碰）。
 
