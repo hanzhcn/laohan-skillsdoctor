@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { OriginBadge, HealthBadges } from "@/components/badges";
 import { SkillDetail } from "@/components/skill-detail";
+import { RuntimePanel } from "@/components/runtime-panel";
 import { ORIGIN_META } from "@/lib/origin-meta";
 import type { ScanResult, Skill, Origin, PathInfo } from "@/lib/types";
 
@@ -30,17 +31,22 @@ export default function Home() {
   const [err, setErr] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const load = () => {
     setLoading(true);
     setErr(null);
-    fetch("/api/scan")
-      .then((r) => r.json())
-      .then(setData)
-      .catch((e) => setErr(String(e)))
-      .finally(() => setLoading(false));
+    setRefreshKey(v => v + 1);
   };
-  useEffect(load, []);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/scan", { signal: controller.signal })
+      .then(async r => { const result = await r.json(); if (!r.ok) throw new Error(result.error ?? "文件扫描失败"); return result as ScanResult; })
+      .then(value => { if (!controller.signal.aborted) setData(value); })
+      .catch(e => { if (!controller.signal.aborted) setErr(String(e)); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
+  }, [refreshKey]);
 
   const skills = data?.skills ?? [];
   const summary = data?.summary;
@@ -116,7 +122,7 @@ export default function Home() {
           <div>
             <h1 className="text-2xl font-bold">laohan-skillsdoctor</h1>
             <p className="text-sm text-muted-foreground">
-              Claude Code / OpenClaw skill 体检仪表盘
+              文件体检 · 宿主可见 · 真实调用 · 场景验收
             </p>
           </div>
         </div>
@@ -127,6 +133,10 @@ export default function Home() {
           刷新
         </Button>
       </header>
+
+      <RuntimePanel />
+
+      <h2 className="mb-4 text-xl font-semibold">文件与来源体检</h2>
 
       {err && <div className="mb-4 text-red-600">错误: {err}</div>}
 
@@ -165,7 +175,7 @@ export default function Home() {
         <div className="mb-6 flex flex-wrap items-center gap-2">
           {issueCnt === 0 ? (
             <Badge className="border-emerald-500/30 bg-emerald-500/15 text-emerald-700">
-              ✅ 无健康问题
+              未发现文件层问题；运行状态见上方证据
             </Badge>
           ) : (
             <Card className="flex flex-wrap gap-3 p-3 text-sm">
@@ -184,7 +194,7 @@ export default function Home() {
               )}
               {issues.notInCC > 0 && (
                 <span className="text-red-600">
-                  CC不可见 {issues.notInCC}
+                  CC缺桥接入口 {issues.notInCC}
                 </span>
               )}
               {issues.brokenLink > 0 && (
@@ -317,7 +327,7 @@ function PluginGroups({
   return (
     <div className="space-y-2">
       <p className="px-1 text-xs text-muted-foreground">
-        按插件分组，ECC（261）默认折叠，点展开
+        按插件分组，ECC 默认折叠；数量按本次扫描显示
       </p>
       {groups.map(([plugin, sks]) => (
         <details
