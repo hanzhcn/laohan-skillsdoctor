@@ -39,6 +39,6 @@
 
 ## 交付与运行
 
-代码提交、任务分支 push / PR 按项目的默认 PR 流程执行；main 不自动合并。当前本地生产预览在任务 worktree 运行，保留用于 Jeffrey 体验；它不是远端部署。PR 待集成时保留该分支/worktree，不能当残留删除。
+功能提交 `b031b3bc0f316149ca32a4d9c7fd8da51d4b31d9` 已 push；[PR #1](https://github.com/hanzhcn/laohan-skillsdoctor/pull/1) 已创建、open、未合并，读取时可合并。随后只补录状态文档；已验运行代码未变化。当前本地生产预览在任务 worktree 运行，保留用于 Jeffrey 体验；它不是远端部署。PR 待集成时保留该分支/worktree，不能当残留删除。
 
 后续用户只需打开预览检查新功能；需要有效性绿色记录时，先实际使用技能，再按 README 的 CLI 为具体产物记录检查。没有足够证据时保持未知是预期行为。

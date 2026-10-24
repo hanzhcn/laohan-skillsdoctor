@@ -12,8 +12,8 @@
 - 已修边界：Next 规范化 URL 下实际 Host 绕过；调用后元数据变化的版本关联；目录预算与插件声明越界；diff 参数向量和失败传播；旧 UI 的文件“健康/CC不可见”改为物理入口语义。
 - 未验边界：Claude 当前模型完整清单、其他项目/窗口与其他宿主运行态、Shell/exec 内采用、无充分日志/场景验收的真实业务效果；均保留未验证。实际日志大于扫描预算时显式部分覆盖，不推导没有使用。
 - 运行：本任务生产预览 `http://127.0.0.1:3017`；main 工作区保持干净。该预览与待集成 worktree 正常保留，不是垃圾/残留；无远端生产部署，NOT_APPLICABLE。
-- 集成：精确提交并 push 任务分支，创建 PR；本记录随后更新 PR 标识。未自动合并 main，Jeffrey 接受 UNVERIFIED。
-- 下一动作：完成分支交付后，Jeffrey 可直接打开预览体验；正式目录的新版本按 PR 集成。需要验收记录按 README 显式 CLI 为具体场景记录。
+- 集成：功能提交 `b031b3bc0f316149ca32a4d9c7fd8da51d4b31d9` 已 push；[PR #1](https://github.com/hanzhcn/laohan-skillsdoctor/pull/1) 已创建、open、未合并，读取时 mergeable=true。随后仅补录此状态与回执；运行代码未变化。Jeffrey 接受 UNVERIFIED。
+- 下一动作：Jeffrey 可直接打开预览体验；正式目录的新版本待 PR 集成，不重复实现。需要验收记录按 README 显式 CLI 为具体场景记录。
 
 ## 近期流水
 
