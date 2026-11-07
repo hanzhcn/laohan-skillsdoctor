@@ -1,16 +1,13 @@
-# laohan-skillsdoctor · SOLO-DIRECT-20261107
+# laohan-skillsdoctor · SOLO-DIRECT-20261107 最终回执
 
-状态：CANDIDATE，尚未完成独立复核或 main 集成。
+状态：本轮治理策略已实际集成。Jeffrey 已明确“开发规则里还是统一不要再PR了，太麻烦了”；本人单人新旧项目统一 direct，任务分支、并行 worktree、适用检查和独立对抗继续。
 
-Jeffrey 明确“开发规则里还是统一不要再PR了，太麻烦了”。本轮将本人单人新旧项目统一 direct，保留任务分支、并行 worktree、适用验证、独立对抗和回滚，不扩大业务发布或自动合并旧候选的授权。
+- 原基线 `d442c47880859d91afcbf17582ab94ed6df29a68`；本轮已审迁移候选 `1c27af579396b5cd2237e8c4b03ebcf491f40f7b`，已ff-only进入main。已正常push main，源集成时fresh远端SHA=1c27af579396b5cd2237e8c4b03ebcf491f40f7b；未更改远端保护或协作者。
+- 源集成真实完成门 exit0，时间 `2026-11-07T12:33:18.962402+00:00`；未合入时对应负控非零，完整原始输出见治理总回执。
+- 治理源码13a2b500经GLM-5.3 max239.530秒、官方DeepSeek max340.501秒完整最终APPROVE及code/Python专项真实对抗；项目迁移范围此前r2两模型已核且源码/字段保持，不换旧证据身份。
+- 本轮仅关闭自己的治理任务条目，原业务历史、验收与费用/部署边界保留。
+- 既有hook功能、机器canonical/行数及业务源码/依赖/测试/CI保持；新增JSON不冒本地hook已装。doctor原无hook，1500为模板默认；coach原hook已有1500，JSON首次声明同值；xiansuo原hook保留三查。
+- 无业务部署、微信发送、费用购买、强推canonical或既有开放PR合并关闭。本回执是源集成后追加的纯事实，不改变已审代码/授权。
+- 回滚按准确原基线在新任务分支作限定路径反向提交；不reset业务WIP、不强推或重放生产。
 
-- 本轮基线：`d442c47880859d91afcbf17582ab94ed6df29a68`；canonical=main；任务分支 `chore/solo-direct-20261107`。
-- 范围：AGENTS/机器策略/必要治理状态与决策回执；既有 hook 功能、行数策略、业务代码与部署入口保持。新增机器声明不等于已装本地 hook，已装 hook 的能力按实际读取入口报告。
-- 仅由本轮 writer 记录治理状态，原历史流水保留。
-- 远端推送将在完整复核后核准确候选；未修改 GitHub 保护、CI 或协作者权限。
-- 验证：候选 diff、policy 字段及真实完成门、中央初始化/PR 保护/未合入反例；本轮治理语义由 GLM 与 DeepSeek 满配最终对抗复核，准确候选与结论由治理总回执绑定。未测试项目业务构建/浏览器/线上效果，治理变更不冒作业务发布。
-- 回滚：从准确基线取回本轮明确目标文件或在新任务分支作反向提交；不重置业务 WIP、不强推、不合并/关闭开放 PR。
-
-总回执：`~/.agents/docs/handoff/SOLO-DIRECT-20261107/RECEIPT.md`。本回执的最终检查/复核/集成事实仅在后续补录后有效。
-
-行数来源澄清：新增 JSON 的1500为中央模板默认值，原仓无机器行数策略或本地hook；本轮未安装或启用hook。
+本次闭环元数据的最终HEAD、fresh远端与完成门由 `~/.agents/docs/handoff/SOLO-DIRECT-20261107/RECEIPT.md` 及其最终Git快照记录，避免在本提交自引尚未生成的SHA。
