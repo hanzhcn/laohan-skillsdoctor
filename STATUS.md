@@ -6,6 +6,8 @@
 
 ## 近期流水
 
+**2026-11-07·SOLO-DIRECT-20261107 候选。** 本人单人项目补 main/direct 机器策略及任务分支/独立worktree集成合同；适用检查和跨模型对抗、main集成尚待完成，不冒运行验收。PR1及其旧候选保留，不搭车。详见[回执](docs/handoff/SOLO-DIRECT-20261107/RECEIPT.md)。
+
 **2026-10-21·image-use 归属修正（use-family 安装位形态）。** Jeffrey 澄清 image-use 是其 codex 生图唯一方法、不可删。复核链路：真身 `~/.agents/use-family/image-use`（独立 git 仓 leeguooooo/image-use），三侧桥接齐全（claude→agents→use-family 穿透 + codex 直指真身），此前 eza ls 显示误导肉眼判为实体孤儿。classify 反向链分支补 `.agents/use-family` 安装位特征（第六种真身位置，与 paseo-plugins 同性质：安装位真身原地更新）。实测 orphan 0（全生态 577 零孤儿）、tool-managed 10。链路零改动（生图功能未触碰）。
 
 **2026-10-21·形态判定重构 + 双生态盲区补强（commit 641c8f3 + 本批）。** 主会话 Claude（Jeffrey 指派）。① 前批 GOVERNED_SKILLS 硬编码名单（仅 3 项）+ 名字前缀法不完备，glm-chat/deepseek-chat 等治理 skill 仍掉 orphan 被当清理候选——重构为按形态判定：agents 实体+非 lock/plugin → governed（治理·正常）或自研治理仓实体（laohan-/cheat- 前缀）；lock/plugin 判定提前修掉 npx 真身被前缀分支误吞的顺序 bug；brokenLink 收紧为"agents 实体+git 仓同名并存"（真双份漂移源），治理真身不报。实测 orphan 91→1（仅 image-use 独立 git clone 真孤儿）。② 生态操作：按体检结果补桥 4 个（dbs-content-value/laohan-duopingtai/laohan-jiaozhun/ui-sketcher，claude→agents 相对链，系统确认即时生效）；source-command-*×51 拍板不桥（自述宿主能力未验证+ECC 命令重复，桥接徒增污染）。③ 盲区补强：scanner names 收集增 openclawSkills/codexSkills（README 承诺 OpenClaw 双生态但 33 个 openclaw 独有 + 1 个 codex 独有 playwright 原不可见），classify 增单宿主独有分支（openclaw-独有/codex-独有），types/scanner 增 openclaw PathInfo；notInCC 抑制机制落地（内置 source-command- 前缀 + 外部名单 ~/.agents/.skd-ignore-notcc）。验证：tsc 零错误；dev 实测总数 544→577、openclaw 15→47、tool-managed 8→9、notInCC 51→0（全量=source-command×51 正确抑制，算术闭合 56=1adapters+4已桥+51）；handoff duplicateCopy（claude-mem 插件副本内容不一致）持续检出。dev 已停。遗留观察：image-use（独立 git clone v0.34.0）归 orphan 属知情提示，是否纳入登记体系由 owner 定。
