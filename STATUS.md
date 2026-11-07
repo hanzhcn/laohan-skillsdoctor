@@ -2,11 +2,16 @@
 
 ## 当前任务
 
-无待续任务。SKILL-DOCTOR-MAINTENANCE 分类与盲区修复批已交付（见近期流水），下一批按需领取。
+### SOLO-DIRECT-20261107 — 本轮治理策略迁移
+
+- owner Jeffrey；治理唯一 writer 铁柱/Codex；隔离分支 chore/solo-direct-20261107。
+- 当前：候选已实现；最终复核与准确候选 main 集成尚待完成，现有 PR1 及其候选保留。业务代码/构建/发布不在本轮。
+- 下一步：按[回执](docs/handoff/SOLO-DIRECT-20261107/RECEIPT.md)完成审核、集成及真实完成门；不冒已完成。
+
+原 SKILL-DOCTOR-MAINTENANCE 批已交付，既有历史不改。
 
 ## 近期流水
 
-**2026-11-07·SOLO-DIRECT-20261107 候选。** 本人单人项目补 main/direct 机器策略及任务分支/独立worktree集成合同；适用检查和跨模型对抗、main集成尚待完成，不冒运行验收。PR1及其旧候选保留，不搭车。详见[回执](docs/handoff/SOLO-DIRECT-20261107/RECEIPT.md)。
 
 **2026-10-21·image-use 归属修正（use-family 安装位形态）。** Jeffrey 澄清 image-use 是其 codex 生图唯一方法、不可删。复核链路：真身 `~/.agents/use-family/image-use`（独立 git 仓 leeguooooo/image-use），三侧桥接齐全（claude→agents→use-family 穿透 + codex 直指真身），此前 eza ls 显示误导肉眼判为实体孤儿。classify 反向链分支补 `.agents/use-family` 安装位特征（第六种真身位置，与 paseo-plugins 同性质：安装位真身原地更新）。实测 orphan 0（全生态 577 零孤儿）、tool-managed 10。链路零改动（生图功能未触碰）。
 
