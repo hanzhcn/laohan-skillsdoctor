@@ -30,19 +30,21 @@ export function SkillDetail({
   onOpenChange: (v: boolean) => void;
 }) {
   const [data, setData] = useState<DetailResp | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<{ name: string; message: string } | null>(null);
 
   useEffect(() => {
     if (!open || !name) return;
-    setLoading(true);
-    setData(null);
-    fetch(`/api/skill/${encodeURIComponent(name)}`)
-      .then((r) => r.json())
-      .then((d) => setData(d))
-      .finally(() => setLoading(false));
+    const controller = new AbortController();
+    fetch(`/api/skill/${encodeURIComponent(name)}`, { signal: controller.signal })
+      .then(async r => { const value = await r.json(); if (!r.ok) throw new Error(value.error ?? "详情读取失败"); return value as DetailResp; })
+      .then(d => { if (!controller.signal.aborted) { setData(d); setError(null); } })
+      .catch(e => { if (!controller.signal.aborted) setError({ name, message: e instanceof Error ? e.message : "详情读取失败" }); });
+    return () => controller.abort();
   }, [open, name]);
 
-  const s = data?.skill;
+  const s = data?.skill.name === name ? data.skill : undefined;
+  const currentError = error?.name === name ? error.message : null;
+  const loading = open && !!name && !s && !currentError;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[85vh]">
@@ -52,6 +54,7 @@ export function SkillDetail({
         </DialogHeader>
         <ScrollArea className="max-h-[65vh] pr-4">
           {loading && <p className="text-muted-foreground">加载中…</p>}
+          {currentError && <p role="alert" className="text-red-600">{currentError}</p>}
           {s && (
             <div className="space-y-4 text-sm">
               <div className="flex items-center gap-2">

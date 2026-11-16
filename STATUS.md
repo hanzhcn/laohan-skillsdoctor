@@ -2,12 +2,15 @@
 
 ## 当前任务
 
-无本轮待续治理任务。SOLO-DIRECT-20261107 已按本人授权完成准确候选main集成；业务验收边界仍按原历史记录。
+无本轮待续治理任务。PR #1 已于 2026-11-17 完成 direct 集成（见流水）；业务验收边界仍按原历史记录。
 
 ## 近期流水
 
+**2026-11-17·PR #1 运行证据功能已集成 main（direct 合同闭环）。** 收尾审计窗口执行：本地复验全过（`npm test` 26/26、lint 0、build 0）→ 独立对抗复审（GLM 满配 TOOLED 窗口，34 断言+9 项 HTTP 实测：伪装 Host×4/Next 规范化差异/跨源/origin:null/端口错配全 403、IPv6 疑点实测排除、验收绑定 12 反例全 fail-closed、正例真通过；结论 0×P0-P2、3×P3 观察项不阻塞；[复审回执](docs/handoff/review-pr1-runtime-evidence-20261117.md)）→ 本地合并（与 main 的 origin-meta/STATUS 冲突语义融合：保留 nestedDuplicate 检查项+采用 PR 的 notInCC 文案）→ push。至此该功能经 Hy3（PR 时）+GLM（本次）两轮异模型复核。PR #1 随 push 自动标记 merged，远端分支已删。
+
 **2026-11-07·SOLO-DIRECT-20261107 已集成。** 本人单人项目main/direct合同与机器声明已落地，真实完成门通过；检查与满配独立对抗齐，任务分支/worktree/业务验证和发布边界保留。仅治理变更，无业务部署；[完整回执](docs/handoff/SOLO-DIRECT-20261107/RECEIPT.md)。
 
+**2026-10-24·运行证据检查。** Claude/Codex 可见、调用/加载、指定场景验收分层落地，26 正反例与生产 API/UI 验证通过，不同模型复核完成；完整回执见 `docs/handoff/SKILLS_DOCTOR_RUNTIME_20261024.md`。该功能已随 2026-11-17 PR 集成收编。
 
 **2026-10-21·image-use 归属修正（use-family 安装位形态）。** Jeffrey 澄清 image-use 是其 codex 生图唯一方法、不可删。复核链路：真身 `~/.agents/use-family/image-use`（独立 git 仓 leeguooooo/image-use），三侧桥接齐全（claude→agents→use-family 穿透 + codex 直指真身），此前 eza ls 显示误导肉眼判为实体孤儿。classify 反向链分支补 `.agents/use-family` 安装位特征（第六种真身位置，与 paseo-plugins 同性质：安装位真身原地更新）。实测 orphan 0（全生态 577 零孤儿）、tool-managed 10。链路零改动（生图功能未触碰）。
 

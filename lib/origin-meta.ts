@@ -83,7 +83,7 @@ export const HEALTH_META: Record<
     badge: "bg-orange-500/15 text-orange-700 border-orange-500/30",
   },
   notInCC: {
-    label: "CC不可见",
+    label: "CC缺桥接入口",
     badge: "bg-red-500/15 text-red-700 border-red-500/30",
   },
   brokenLink: {
@@ -116,7 +116,7 @@ export function healthItems(h: Health) {
       label: "嵌套残留",
       detail: "目录内嵌同名子目录 SKILL.md，Codex 会双重注入",
     });
-  if (h.notInCC) items.push({ key: "notInCC", label: "CC不可见" });
+  if (h.notInCC) items.push({ key: "notInCC", label: "CC缺桥接入口" });
   if (h.brokenLink)
     items.push({ key: "brokenLink", label: "链断副本" });
   return items;

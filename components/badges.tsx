@@ -14,7 +14,7 @@ export function OriginBadge({ origin }: { origin: Origin }) {
 export function HealthBadges({ skill }: { skill: Skill }) {
   const items = healthItems(skill.health);
   if (items.length === 0)
-    return <span className="text-xs text-muted-foreground">健康</span>;
+    return <span className="text-xs text-muted-foreground">文件层未发现问题</span>;
   return (
     <div className="flex flex-wrap gap-1">
       {items.map((it) => (
